@@ -1,0 +1,54 @@
+.sometimesGhost {
+  transition: opacity 0.25s ease-out;
+  opacity: 1;
+}
+
+.sometimesGhost.isInvisible {
+  opacity: 0;
+}
+
+.cardBody {
+    max-height: 0;
+    transition: max-height 0.75s ease-out;
+    overflow: hidden;
+  }
+  
+  .cardBody.expanded {
+    max-height: 500px;
+    transition: max-height 0.95s ease-in;
+  }
+
+  .cardTitleContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 16px 0 16px;
+  }
+
+  .reset {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    color: #FFF;
+    border: none;
+    background-color: rgba(var(--rgbPink), 0.8);
+    cursor: pointer;
+    margin-left: 8px;
+  }
+
+  .reset:hover {
+    background-color: rgba(var(--rgbPink), 1);
+  }
+
+  .textDynamic {
+    color: rgba(var(--rgbPink), 0.8);
+  }
+
+  .expandToggle {
+    cursor: pointer;
+  }
+
+  .expandToggle:hover {
+    color: rgba(var(--rgbPink), 1);
+    text-decoration: underline;
+  }

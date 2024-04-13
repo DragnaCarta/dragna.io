@@ -1,0 +1,68 @@
+.fixed {
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+  }
+  
+  .topbar {
+    width: 100%;
+    /*  #282a36 */
+    /* rgb(14, 13, 17) */
+    background: #282a36;
+    height: 50px;
+    padding: 5px;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 10px 0px;
+    justify-content: space-between;
+    z-index: 1;
+  }
+  
+  .cta {
+    transition: all 0.3s ease-in-out;
+    margin-left: 20px;
+    margin-right: 20px;
+    display: inline-block;
+    background: rgba(80, 250, 123, 1);
+    border-radius: 4px;
+    text-align: center;
+    color: #000;
+    font-weight: 400;
+    padding: 4px 8px;
+    font-size: 18px;
+    border: 0;
+  }
+  
+  .cta:hover,
+  .cta:focus {
+    border: 0;
+    color: #000 !important;
+    background: rgba(80, 250, 123, 0.8);
+  }
+  
+  .items {
+    position: relative;
+  }
+  
+  .snowCursor,
+  .snowCursor * {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>☃️</text></svg>"),
+      auto;
+  }
+  
+  .snowCursor *:hover {
+    background: linear-gradient(
+      to right,
+      hsl(250, 100%, 75%) -2.25%,
+      hsl(170, 100%, 75%) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  @media (max-width: 600px) {
+    .items {
+      display: none;
+    }
+  }

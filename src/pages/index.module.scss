@@ -1,0 +1,124 @@
+.hero {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(26, 23, 38);
+    background-image: linear-gradient(rgb(26, 23, 38), rgb(64, 58, 95));
+    z-index: 1;
+}
+
+.hero .container {
+    min-height: 30rem;
+    padding: 6rem 1.5rem 4rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero .content {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+    gap: 1em;
+}
+
+.hero .castle {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: -0.5rem;
+    background-image: url(./../images/castle.svg);
+    background-size: contain;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    z-index: 2;
+}
+
+@media screen and (max-width: 72rem) {
+    .hero .castle {
+        width: 150%;
+        left: -40%;
+    }
+}
+
+@media screen and (max-width: 48rem) {
+    .hero .castle {
+        width: 300%;
+        left: -180%;
+    }
+}
+
+.hero .particles {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+section.home {
+    background-color: rgb(14, 13, 17);
+    min-height: 300px;
+}
+
+$starFieldWidth: 2560;
+$starFieldHeight: 2000;
+$starStartOffset: 600px;
+
+$starOneScrollDuration: 75s;
+$starTwoScrollDuration: 125s;
+$starThreeScrollDuration: 175s;
+$numStarOneStars: 1700;
+$numStarTwoStars: 700;
+$numStarThreeStars: 200;
+
+@function multiple-box-shadow ($n) {
+  $stars: "#{random($starFieldWidth)}px #{random($starFieldHeight)}px #FFF";
+  
+  @for $i from 2 through $n {
+    $stars: "#{$stars} , #{random($starFieldWidth)}px #{random($starFieldHeight)}px #FFF";
+  }
+  
+  @return unquote($stars);
+}
+
+
+@mixin star-template($numStars, $starSize, $scrollSpeed) 
+{  
+  z-index: 10;
+  width: $starSize;
+  height: $starSize;
+  background: transparent;
+  box-shadow: multiple-box-shadow($numStars);
+  animation: animStar $scrollSpeed linear infinite;
+  
+  &:after
+  {
+    content: " ";
+    top: -$starStartOffset;
+    width: $starSize;
+    height: $starSize;
+    position: absolute;
+    background: transparent;
+    box-shadow: multiple-box-shadow($numStars);
+  }
+}
+
+.stars { @include star-template($numStarOneStars, 1px, $starOneScrollDuration); }
+.stars2 { @include star-template($numStarTwoStars, 2px, $starTwoScrollDuration); }
+.stars3 { @include star-template($numStarThreeStars, 3px, $starThreeScrollDuration); }
+
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-#{$starFieldHeight}px);
+  }
+}
