@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import queryString from 'query-string';
+import { GetServerSideProps } from 'next';
+import clsx from 'clsx';
 // import { Inter } from 'next/font/google'
 
 import Banner from '@/components/Banner/Banner';
@@ -12,7 +14,6 @@ import CardBuildYourEncounter from '@/components/PageHome/CardBuildYourEncounter
 
 import Theme from '@/layouts/Theme';
 import styles from './challenge-rated.module.css';
-import { GetServerSideProps } from 'next';
 
 // const inter = Inter({ subsets: ['latin'] });
 const _encounterCalculator = new EncounterCalculator();
@@ -147,7 +148,7 @@ export default function Home({ queryParams, initialIsExpanded }: ssrProps) {
 
       <Theme>
         <main style={{ marginBlock: '53px' }}>
-          <div style={{ padding: '1rem' }}>
+          <div className="p-4">
             {/* <Banner /> */}
 
             <section>
@@ -181,32 +182,26 @@ export default function Home({ queryParams, initialIsExpanded }: ssrProps) {
               <Container>
                 {/* <Drawer> */}
                 {/* Card 3 - Encounter Summary */}
-                <div style={{ margin: '1rem' }}>
+                <div className="m-4">
                   <h2>Encounter Summary</h2>
                 </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    flexWrap: 'wrap',
-                  }}
-                >
-                  <div style={{ flexGrow: 1 }}>
-                    <div style={{ margin: '1rem' }}>
-                      <p style={{ fontWeight: '700' }}>Party:</p>
+                <div className="flex flex-row flex-wrap">
+                  <div className="grow">
+                    <div className="m-4">
+                      <p className="font-bold">Party:</p>
                       <p>
                         <DynamicText>{partySize}</DynamicText> PCs at Level{' '}
                         <DynamicText>{partyAverageLevel}</DynamicText>
                       </p>
                     </div>
-                    <div style={{ margin: '1rem' }}>
-                      <p style={{ fontWeight: '700' }}>Difficulty</p>
+                    <div className="grow">
+                      <p className="font-bold">Difficulty</p>
                       <p>
                         <DynamicText>{encounterDifficulty}</DynamicText>
                       </p>
                     </div>
-                    <div style={{ margin: '1rem' }}>
-                      <p style={{ fontWeight: '700' }}>HP Loss</p>
+                    <div className="m-4">
+                      <p className="font-bold">HP Loss</p>
                       <p>
                         <DynamicText>
                           {Number.isNaN(hpLost) ? 0 : Math.round(hpLost)}
@@ -214,8 +209,8 @@ export default function Home({ queryParams, initialIsExpanded }: ssrProps) {
                         % of the party&#39;s combined maximum hit points
                       </p>
                     </div>
-                    <div style={{ margin: '1rem' }}>
-                      <p style={{ fontWeight: '700' }}>Resources Spent</p>
+                    <div className="m-4">
+                      <p className="font-bold">Resources Spent</p>
                       <p>
                         <DynamicText>
                           {Number.isNaN(resourcesSpent)
@@ -229,7 +224,7 @@ export default function Home({ queryParams, initialIsExpanded }: ssrProps) {
                   </div>
 
                   {/* Left */}
-                  <div style={{ flexGrow: 1 }}>
+                  <div className="grow">
                     {/* <button>Start Over</button>
                     
                     <div>
@@ -248,8 +243,8 @@ export default function Home({ queryParams, initialIsExpanded }: ssrProps) {
                 {/* </Drawer> */}
               </Container>
               <Container>
-                <section style={{ marginInline: '1rem' }}>
-                  <h2 style={{ marginTop: 36 }}>How This Calculator Works</h2>
+                <section className="mx-4">
+                  <h2 className="mt-9">How This Calculator Works</h2>
                   <h4>The Basics</h4>
                   <p>
                     The Challenge Rated calculator is built on the{' '}
@@ -304,7 +299,7 @@ export default function Home({ queryParams, initialIsExpanded }: ssrProps) {
                     degree of error.)
                   </p>
 
-                  <aside className={styles.callout} style={{ marginTop: 24 }}>
+                  <aside className={clsx(styles.callout, 'mt-6')}>
                     <p>
                       The Challenge Rated calculator assumes a “white-room”
                       scenario, in which all players and allied NPCs are
