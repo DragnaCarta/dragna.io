@@ -11,9 +11,6 @@ dependencies:
   fraction.js:
     specifier: ^4.3.7
     version: 4.3.7
-  malarkey:
-    specifier: ^2.0.2
-    version: 2.0.2
   next:
     specifier: ^13.5.6
     version: 13.5.6(react-dom@18.2.0)(react@18.2.0)(sass@1.75.0)
@@ -2056,10 +2053,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
-
-  /malarkey@2.0.2:
-    resolution: {integrity: sha512-w0pnL0ykKezQLyQwoWmFe+rACHeL+b2l6f9uEXIXF3DEmT4ogGdTaIcxJOg3z71tQcbrX7X/Y71LsslMGB/uiw==}
-    dev: false
 
   /merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
