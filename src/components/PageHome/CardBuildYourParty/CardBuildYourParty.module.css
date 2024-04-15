@@ -8,47 +8,47 @@
 }
 
 .cardBody {
-    max-height: 0;
-    transition: max-height 0.75s ease-out;
-    overflow: hidden;
-  }
-  
-  .cardBody.expanded {
-    max-height: 500px;
-    transition: max-height 0.95s ease-in;
-  }
+  max-height: 0;
+  transition: max-height 0.75s ease-out;
+  overflow: hidden;
+}
 
-  .cardTitleContainer {
-    display: flex;
-    flex-direction: column;
-    padding: 16px 16px 0 16px;
-  }
+.cardBody.expanded {
+  max-height: 500px;
+  transition: max-height 0.95s ease-in;
+}
 
-  .reset {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 32px;
-    color: #FFF;
-    border: none;
-    background-color: rgba(var(--rgbPink), 0.8);
-    cursor: pointer;
-    margin-left: 8px;
-  }
+.cardTitleContainer {
+  display: flex;
+  flex-direction: row;
+  padding: 16px;
+}
 
-  .reset:hover {
-    background-color: rgba(var(--rgbPink), 1);
-  }
+.reset {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  color: #fff;
+  border: none;
+  background-color: rgba(var(--rgbPink), 0.8);
+  cursor: pointer;
+  margin-left: 8px;
+}
 
-  .textDynamic {
-    color: rgba(var(--rgbPink), 0.8);
-  }
+.reset:hover {
+  background-color: rgba(var(--rgbPink), 1);
+}
 
-  .expandToggle {
-    cursor: pointer;
-  }
+.textDynamic {
+  color: rgba(var(--rgbPink), 0.8);
+}
 
-  .expandToggle:hover {
-    color: rgba(var(--rgbPink), 1);
-    text-decoration: underline;
-  }
+.expandToggle {
+  cursor: pointer;
+}
+
+.expandToggle:hover {
+  color: rgba(var(--rgbPink), 1);
+  text-decoration: underline;
+}

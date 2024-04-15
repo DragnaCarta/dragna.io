@@ -40,24 +40,21 @@
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
 
-
-
   /** Theme Vars **/
-  --primary: #D32430;
-  --secondary: #BBBCAC;
-  --other: #582D30;
-  --background: #F8D5B5;
-  --background-secondary: #FFEFF4;
+  --primary: #d32430;
+  --secondary: #bbbcac;
+  --other: #582d30;
+  --background: #f8d5b5;
+  --background-secondary: #ffeff4;
 
-
-  --white: #FFF;
-  --color-001: #2B2B2B;
+  --white: #fff;
+  --color-001: #2b2b2b;
 
   --bright-red: #dc3545;
   --bright-red-darken: #bb2d3b;
-  --light-red: #B37676;
+  --light-red: #b37676;
 
-  --light-blue: #5F7FAD;
+  --light-blue: #5f7fad;
   --bright-blue: #0d6efd;
 
   /** Semantic Vars **/
@@ -89,7 +86,7 @@
 
   --card-background: transparent;
 
-  --card-title-background: #2B2B2B;
+  --card-title-background: #2b2b2b;
   --card-title-color: var(--white);
 
   --container-max-width: 1280px;
@@ -106,7 +103,12 @@ a {
   text-decoration: none;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
 
@@ -129,13 +131,11 @@ h3 {
   font-size: 20px; /* 1.75 em */
 }
 
-
 h4 {
-
+  font-size: 18px;
 }
 
 h5 {
-
 }
 
 h6 {
