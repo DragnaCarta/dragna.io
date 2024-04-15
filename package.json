@@ -26,5 +26,10 @@
     "@types/react-dom": "^18.2.11",
     "eslint": "^8.51.0",
     "eslint-config-next": "^13.5.4"
+  },
+  "prettier": {
+    "semi": true,
+    "trailingComma": "es5",
+    "singleQuote": true
   }
 }
