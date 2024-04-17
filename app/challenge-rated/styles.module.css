@@ -1,0 +1,15 @@
+.callout {
+  --highlight-warning: #ff8725;
+  --custom-background-warning: #642d0046;
+
+  --highlight: var(--highlight-warning);
+  --background: var(--custom-background-warning);
+
+  border: 4px solid var(--highlight) !important;
+  border-radius: 15px;
+  padding-inline: 24px;
+  padding-block: 16px;
+  background-color: var(--background);
+  mix-blend-mode: normal;
+  border-radius: 15px;
+}
