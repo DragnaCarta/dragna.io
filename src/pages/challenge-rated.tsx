@@ -271,9 +271,10 @@ export default function Home({ queryParams, initialIsExpanded }: ssrProps) {
                     . To help you build balanced encounters, the calculator
                     estimates how many hit points your players will lose in a
                     given fight. To do this, the calculator compares your
-                    players' expected offensive and defensive strength to their
-                    enemies' expected offensive and defensive strength, then
-                    applies a formula to calculate the expected hit points lost.
+                    players&apos; expected offensive and defensive strength to
+                    their enemies&apos; expected offensive and defensive
+                    strength, then applies a formula to calculate the expected
+                    hit points lost.
                   </p>
                   <h4>Under the hood</h4>
                   <p>
@@ -313,8 +314,8 @@ export default function Home({ queryParams, initialIsExpanded }: ssrProps) {
                       variance in dice rolls can create broad ranges in possible
                       encounter outcomes, even within a single standard
                       deviation. While this calculator is a helpful tool for
-                      calibrating an encounter’s difficulty, it should be used
-                      in conjunction with a holistic review of any complex
+                      calibrating an encounter&apos;s difficulty, it should be
+                      used in conjunction with a holistic review of any complex
                       combat factors (e.g., combat conditions, environmental
                       terrain, or additional objectives), as well as proper
                       playtesting if feasible.
