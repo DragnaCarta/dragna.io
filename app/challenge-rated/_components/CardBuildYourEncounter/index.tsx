@@ -6,6 +6,7 @@ import { CreatureItem } from '../CreatureItem';
 import RefreshIcon from '../RefreshIcon';
 import { useState } from 'react';
 import EncounterCalculator from '../../_lib/EncounterCalculator';
+import { IconInfo } from '@/app/components/IconInfo';
 
 type CardBuildYourEncounterProps = {
   partySize: number;
@@ -91,10 +92,10 @@ export function CardBuildYourEncounter({
       </div>
 
       <div
-        className="grid w-full mt-6"
+        className="w-full mt-6"
         style={{ gridTemplateColumns: '1fr auto 1fr' }}
       >
-        <div className="flex-grow card bg-neutral p-4 flex flex-col justify-between">
+        <div className="card bg-neutral p-4 flex flex-col justify-between">
           <div className="flex items-center gap-4">
             <label className="form-control">
               <select
@@ -102,6 +103,7 @@ export function CardBuildYourEncounter({
                 className="select select-sm"
                 onChange={(event) => setPartySize(event.target.value)}
               >
+                <option disabled>0</option>
                 {PartySizeOptions.map((pso) => (
                   <option key={pso.displayText} value={pso.value}>
                     {pso.displayText}
@@ -109,7 +111,16 @@ export function CardBuildYourEncounter({
                 ))}
               </select>
             </label>
-            <div> players of level </div>
+            <div className="inline-flex items-center">
+              players&nbsp;
+              <div
+                className="tooltip"
+                data-tip="We use pre-generated character benchmarks to estimate the strength of your party. "
+              >
+                <IconInfo width={16} height={16} />
+              </div>
+              &nbsp;of level&nbsp;
+            </div>
             <label className="form-control">
               <select
                 value={partyAverageLevel}
@@ -143,10 +154,14 @@ export function CardBuildYourEncounter({
               })}
           </div>
 
-          <AddCreature addCreature={addCreature} creatureToggle={1} />
+          <AddCreature
+            addCreature={addCreature}
+            creatureToggle={1}
+            unit="Power"
+          />
         </div>
-        <div className="divider divider-horizontal">VS</div>
-        <div className="flex-grow card bg-neutral textarea-info p-4 flex flex-col justify-between">
+        <div className="divider divider-vertical">VS</div>
+        <div className="card bg-neutral textarea-info p-4 flex flex-col justify-between">
           <div className="flex flex-col gap-2 mb-4">
             {Object.keys(enemyCrOccurrences)
               .map((x) => parseFloat(x))
@@ -166,7 +181,11 @@ export function CardBuildYourEncounter({
               })}
           </div>
 
-          <AddCreature addCreature={addCreature} creatureToggle={0} />
+          <AddCreature
+            addCreature={addCreature}
+            creatureToggle={0}
+            unit="Power"
+          />
         </div>
       </div>
     </>
@@ -176,8 +195,10 @@ export function CardBuildYourEncounter({
 function AddCreature({
   addCreature,
   creatureToggle,
+  unit,
 }: Pick<CardBuildYourEncounterProps, 'addCreature'> & {
   creatureToggle: 0 | 1;
+  unit: string;
 }) {
   const [creature, setCreature] = useState<string | undefined>(
     String(ChallengeRatingOptions[0].value)
@@ -187,11 +208,18 @@ function AddCreature({
     <div className="form-control">
       <div className="join w-full flex">
         <div
-          className="btn btn-sm join-item cursor-default animate-none"
-          tabIndex={-1}
+          className="tooltip tooltip-accent"
+          data-tip="We use the Monster Statistics by Challenge Ratings chart in the Dungeon Master's Guide to estimate the strength of NPCs and other creatures involved in the encounter."
         >
-          {creatureToggle ? 'ALLY' : 'ENEMY'}
+          <div
+            className="btn btn-sm join-item cursor-default animate-none"
+            tabIndex={-1}
+          >
+            {creatureToggle ? 'ALLY' : 'ENEMY'}{' '}
+            <IconInfo width={16} height={16} />
+          </div>
         </div>
+
         <select
           className="select select-sm join-item grow"
           value={creature}
@@ -204,7 +232,7 @@ function AddCreature({
               selected={cr.value == creature}
             >
               CR {cr.displayText} &middot;{' '}
-              {EncounterCalculator.CRPowerLookup[cr.value]} XP
+              {EncounterCalculator.CRPowerLookup[cr.value]} {unit}
             </option>
           ))}
         </select>

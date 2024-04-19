@@ -19,19 +19,24 @@ export function CreatureItem({
   const crDisplay = new Fraction(challengeRating).toFraction(true);
 
   return (
-    <div className="flex justify-between gap-2">
+    <div
+      className="grid justify-between gap-2"
+      style={{ gridTemplateColumns: '1fr 0fr' }}
+    >
       <p className="inline-flex items-center rounded-md grow">
         CR: {crDisplay} &middot;{' '}
-        {EncounterCalculator.CRPowerLookup[challengeRating]} XP
+        {EncounterCalculator.CRPowerLookup[challengeRating]} Power
       </p>
-      <div className="flex items-center join">
+      <div className="items-center join grow-0 shrink">
         <button
           className="btn btn-sm btn-square btn-error join-item"
           onClick={() => decreaseCount(challengeRating)}
         >
           <IconMinus />
         </button>
-        <span className="join-item px-4">{count}</span>
+        <button className="btn btn-sm join-item" tabIndex={-1}>
+          {count}
+        </button>
         <button
           className="btn btn-sm btn-square btn-success join-item"
           onClick={() => increaseCount(challengeRating)}
