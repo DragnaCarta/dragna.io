@@ -1,16 +1,11 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
-import queryString from 'query-string';
-import { GetServerSideProps } from 'next';
 import clsx from 'clsx';
+import queryString from 'query-string';
+import { useEffect, useState } from 'react';
 // import { Inter } from 'next/font/google'
 
+import { CardBuildYourEncounter } from './_components/CardBuildYourEncounter';
 import EncounterCalculator from './_lib/EncounterCalculator';
-import CardBuildYourParty from './_components/CardBuildYourParty';
-import CardBuildYourEncounter from './_components/CardBuildYourEncounter';
-
-import styles from './styles.module.css';
 
 // const inter = Inter({ subsets: ['latin'] });
 const _encounterCalculator = new EncounterCalculator();
@@ -120,7 +115,7 @@ export default function Home({
       allies
     );
 
-  function addCreature(challengeRating: number) {
+  function addCreature(challengeRating: number, creatureToggle: 0 | 1) {
     if (creatureToggle === 0) {
       setEnemies([...enemies, challengeRating]);
     } else {
@@ -133,21 +128,13 @@ export default function Home({
       <main className="max-w-screen-md mx-auto">
         <div className="p-4">
           {/* <Banner /> */}
-
           <section>
-            <CardBuildYourParty
+            <CardBuildYourEncounter
               partySize={partySize}
               setPartySize={setPartySize}
               partyAverageLevel={partyAverageLevel}
               setPartyAverageLevel={setPartyAverageLevel}
-            />
-          </section>
-
-          <section>
-            <CardBuildYourEncounter
               addCreature={addCreature}
-              creatureToggle={creatureToggle}
-              setCreatureToggle={setCreatureToggle}
               enemies={enemies}
               setEnemies={setEnemies}
               allies={allies}
@@ -155,62 +142,30 @@ export default function Home({
             />
           </section>
 
-          <section>
-            {/* <Drawer> */}
-            {/* Card 3 - Encounter Summary */}
-            <div className="m-4">
-              <h2>Encounter Summary</h2>
-            </div>
-            <div className="flex flex-row flex-wrap">
-              <div className="grow">
-                <div className="m-4">
-                  <p className="font-bold">Party:</p>
-                  <p>
-                    {partySize} PCs at Level {partyAverageLevel}
-                  </p>
-                </div>
-                <div className="grow">
-                  <p className="font-bold">Difficulty</p>
-                  <p>{encounterDifficulty}</p>
-                </div>
-                <div className="m-4">
-                  <p className="font-bold">HP Loss</p>
-                  <p>
-                    {Number.isNaN(hpLost) ? 0 : Math.round(hpLost)}% of the
-                    party&#39;s combined maximum hit points
-                  </p>
-                </div>
-                <div className="m-4">
-                  <p className="font-bold">Resources Spent</p>
-                  <p>
-                    {Number.isNaN(resourcesSpent)
-                      ? 0
-                      : Math.round(resourcesSpent)}
-                    % of the party&#39;s combined daily features and resources
-                  </p>
-                </div>
+          <section className="mt-6 mb-4">
+            <div className="stats w-full">
+              <div className="stat">
+                <p className="stat-title">Difficulty</p>
+                <p className="stat-value text-warning">{encounterDifficulty}</p>
               </div>
-
-              {/* Left */}
-              <div className="grow">
-                {/* <button>Start Over</button>
-                    
-                    <div>
-                      <div>Share this encounter:</div>
-                      <div style={{}}>
-                        <input 
-                          type="text" 
-                          value={'https://dragna.io/challenge-rated?'} 
-                        />
-                        <button></button>
-                        
-                      </div>
-                    </div> */}
+              <div className="stat">
+                <p className="stat-title">HP Loss</p>
+                <p className="stat-value text-warning">
+                  {Number.isNaN(hpLost) ? 0 : Math.round(hpLost)}%
+                </p>
+              </div>
+              <div className="stat">
+                <p className="stat-title">Resources Spent</p>
+                <p className={clsx('stat-value', 'text-warning')}>
+                  {Number.isNaN(resourcesSpent)
+                    ? 0
+                    : Math.round(resourcesSpent)}
+                  %
+                </p>
               </div>
             </div>
-            {/* </Drawer> */}
 
-            <section className="mx-4">
+            <section>
               <h2 className="mt-9">How This Calculator Works</h2>
               <h4>The Basics</h4>
               <p>
@@ -265,7 +220,7 @@ export default function Home({
                 within a reasonable degree of error.)
               </p>
 
-              <aside className={clsx(styles.callout, 'mt-6')}>
+              <aside className="border-2 border-warning bg-accent bg-opacity-10 p-4 rounded-xl mt-6">
                 <p>
                   The Challenge Rated calculator assumes a “white-room”
                   scenario, in which all players and allied NPCs are fighting

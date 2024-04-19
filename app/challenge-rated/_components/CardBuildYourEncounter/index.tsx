@@ -1,29 +1,31 @@
-import Fraction from 'fraction.js';
-
-import ButtonGrid from '@/app/components/ButtonGrid/ButtonGrid';
-import ButtonToggle from '@/app/components/ButtonToggle';
-
-import ChallengeRatingOptions from '../../_lib/ChallengeRatingOptions';
-import CreatureToggleOptions from '../../_lib/CreatureToggleOptions';
-import RefreshIcon from '../RefreshIcon';
-import styles from './CardBuildYourEncounter.module.css';
 import IconPlus from '@/app/components/IconPlus';
-import IconMinus from '@/app/components/IconMinus';
+import ChallengeRatingOptions from '../../_lib/ChallengeRatingOptions';
+import PartyLevelOptions from '../../_lib/PartyLevelOptions';
+import PartySizeOptions from '../../_lib/PartySizeOptions';
+import { CreatureItem } from '../CreatureItem';
+import RefreshIcon from '../RefreshIcon';
+import { useState } from 'react';
+import EncounterCalculator from '../../_lib/EncounterCalculator';
 
 type CardBuildYourEncounterProps = {
-  addCreature: (value: number) => void;
-  creatureToggle: number;
-  setCreatureToggle: (value: number) => void;
+  partySize: number;
+  setPartySize: (value: number) => void;
+  partyAverageLevel: number;
+  setPartyAverageLevel: (value: number) => void;
+
+  addCreature: (value: number, toggle: 0 | 1) => void;
   enemies: number[];
   setEnemies: (value: number[]) => void;
   allies: number[];
   setAllies: (value: number[]) => void;
 };
 
-function CardBuildYourEncounter({
+export function CardBuildYourEncounter({
+  partySize,
+  partyAverageLevel,
+  setPartySize,
+  setPartyAverageLevel,
   addCreature,
-  creatureToggle,
-  setCreatureToggle,
   enemies,
   setEnemies,
   allies,
@@ -47,6 +49,7 @@ function CardBuildYourEncounter({
 
   function removeEnemy(challengeRating: number) {
     const index = enemies.indexOf(challengeRating);
+
     if (index > -1) {
       enemies.splice(index, 1);
       setEnemies([...enemies]);
@@ -72,173 +75,143 @@ function CardBuildYourEncounter({
 
   return (
     <>
-      <div className={styles.cardTitleContainer}>
+      <div className="flex gap-2 items-center">
         <h2>Build Your Encounter</h2>
         <button
-          className={styles.reset}
+          className="btn btn-square btn-sm"
           onClick={() => {
             setEnemies([]);
             setAllies([]);
+            setPartyAverageLevel(0);
+            setPartySize(0);
           }}
         >
           <RefreshIcon />
         </button>
       </div>
-      <div>
-        <ButtonToggle
-          label="Are you adding allies or enemies?"
-          options={CreatureToggleOptions}
-          selectedValue={creatureToggle}
-          onClick={(value: number) => setCreatureToggle(value)}
-        />
-      </div>
-      <div>
-        <ButtonGrid
-          label="Select all creatures that will fight for the entirety of this encounter. (To calculate the difficulty of a wave encounter or a multi-phase boss, calculate each wave or phase as a separate encounter, then sum together each wave or phase’s expected hit points lost to determine the true difficulty.)"
-          options={ChallengeRatingOptions}
-          onClick={(value: number) => addCreature(value)}
-          mode={creatureToggle === 0 ? 'red' : 'blue'}
-        />
-      </div>
 
-      <div>
-        <EnemiesList
-          enemyCrOccurrences={enemyCrOccurrences}
-          addEnemy={addEnemy}
-          removeEnemy={removeEnemy}
-        />
-        <AlliesList
-          allyCrOccurrences={allyCrOccurrences}
-          addAlly={addAlly}
-          removeAlly={removeAlly}
-        />
-      </div>
-    </>
-  );
-}
-
-type EnemiesListProps = {
-  enemyCrOccurrences: Record<number, number>;
-  addEnemy: (value: number) => void;
-  removeEnemy: (value: number) => void;
-};
-
-function EnemiesList({
-  enemyCrOccurrences,
-  addEnemy,
-  removeEnemy,
-}: EnemiesListProps) {
-  if (Object.keys(enemyCrOccurrences).length === 0) {
-    return <></>;
-  }
-
-  return (
-    <>
-      <h3 className={styles.enemyTitle}>Enemies:</h3>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {Object.keys(enemyCrOccurrences)
-          .map((x) => parseFloat(x))
-          .sort(_numberSort)
-          .map((cr) => {
-            const crCount = enemyCrOccurrences[cr];
-
-            return (
-              <CreatureListItem
-                key={cr}
-                challengeRating={cr}
-                count={crCount}
-                increaseCount={(cr) => addEnemy(cr)}
-                decreaseCount={(cr) => removeEnemy(cr)}
-              />
-            );
-          })}
-      </div>
-    </>
-  );
-}
-
-type AlliesListProps = {
-  allyCrOccurrences: Record<number, number>;
-  addAlly: (value: number) => void;
-  removeAlly: (value: number) => void;
-};
-
-function AlliesList({
-  allyCrOccurrences,
-  addAlly,
-  removeAlly,
-}: AlliesListProps) {
-  if (Object.keys(allyCrOccurrences).length === 0) {
-    return <></>;
-  }
-
-  return (
-    <>
-      <h3 className={styles.allyTitle}>Allies:</h3>
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {Object.keys(allyCrOccurrences)
-          .map((x) => parseFloat(x))
-          .sort(_numberSort)
-          .map((cr) => {
-            const crCount = allyCrOccurrences[cr];
-            return (
-              <CreatureListItem
-                key={cr}
-                challengeRating={cr}
-                count={crCount}
-                increaseCount={(cr) => addAlly(cr)}
-                decreaseCount={(cr) => removeAlly(cr)}
-              />
-            );
-          })}
-      </div>
-    </>
-  );
-}
-
-type CreatureListItemProps = {
-  challengeRating: number;
-  count: number;
-  increaseCount: (challengeRating: number) => void;
-  decreaseCount: (challengeRating: number) => void;
-};
-
-function CreatureListItem({
-  challengeRating,
-  count,
-  increaseCount,
-  decreaseCount,
-}: CreatureListItemProps) {
-  const crDisplay = new Fraction(challengeRating).toFraction(true);
-
-  return (
-    <div
-      style={{
-        display: 'flex',
-        padding: '0 0.5rem',
-        margin: '2px 4px',
-      }}
-    >
-      <p className={styles.crText}>CR: {crDisplay}</p>
       <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginLeft: 'auto',
-        }}
+        className="grid w-full mt-6"
+        style={{ gridTemplateColumns: '1fr auto 1fr' }}
       >
-        <button
-          className={`${styles.svgButton} ${styles.btnChallengeRating} ${styles.decrement}`}
-          onClick={() => decreaseCount(challengeRating)}
+        <div className="flex-grow card bg-neutral p-4 flex flex-col justify-between">
+          <div className="flex items-center gap-4">
+            <label className="form-control">
+              <select
+                value={partySize}
+                className="select select-sm"
+                onChange={(event) => setPartySize(event.target.value)}
+              >
+                {PartySizeOptions.map((pso) => (
+                  <option key={pso.displayText} value={pso.value}>
+                    {pso.displayText}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <div> players of level </div>
+            <label className="form-control">
+              <select
+                value={partyAverageLevel}
+                className="select select-sm"
+                onChange={(event) => setPartyAverageLevel(event.target.value)}
+              >
+                {PartyLevelOptions.map((pso) => (
+                  <option key={pso.displayText} value={pso.value}>
+                    {pso.displayText}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div className="flex flex-col gap-2 my-4">
+            {Object.keys(allyCrOccurrences)
+              .map((x) => parseFloat(x))
+              .sort(_numberSort)
+              .map((cr) => {
+                const crCount = allyCrOccurrences[cr];
+                return (
+                  <CreatureItem
+                    key={cr}
+                    challengeRating={cr}
+                    count={crCount}
+                    increaseCount={(cr) => addAlly(cr)}
+                    decreaseCount={(cr) => removeAlly(cr)}
+                  />
+                );
+              })}
+          </div>
+
+          <AddCreature addCreature={addCreature} creatureToggle={1} />
+        </div>
+        <div className="divider divider-horizontal">VS</div>
+        <div className="flex-grow card bg-neutral textarea-info p-4 flex flex-col justify-between">
+          <div className="flex flex-col gap-2 mb-4">
+            {Object.keys(enemyCrOccurrences)
+              .map((x) => parseFloat(x))
+              .sort(_numberSort)
+              .map((cr) => {
+                const crCount = enemyCrOccurrences[cr];
+
+                return (
+                  <CreatureItem
+                    key={cr}
+                    challengeRating={cr}
+                    count={crCount}
+                    increaseCount={(cr) => addEnemy(cr)}
+                    decreaseCount={(cr) => removeEnemy(cr)}
+                  />
+                );
+              })}
+          </div>
+
+          <AddCreature addCreature={addCreature} creatureToggle={0} />
+        </div>
+      </div>
+    </>
+  );
+}
+
+function AddCreature({
+  addCreature,
+  creatureToggle,
+}: Pick<CardBuildYourEncounterProps, 'addCreature'> & {
+  creatureToggle: 0 | 1;
+}) {
+  const [creature, setCreature] = useState<string | undefined>(
+    String(ChallengeRatingOptions[0].value)
+  );
+
+  return (
+    <div className="form-control">
+      <div className="join w-full flex">
+        <div
+          className="btn btn-sm join-item cursor-default animate-none"
+          tabIndex={-1}
         >
-          <IconMinus />
-        </button>
-        <span className={styles.challengeRatingCount}>{count}</span>
+          {creatureToggle ? 'ALLY' : 'ENEMY'}
+        </div>
+        <select
+          className="select select-sm join-item grow"
+          value={creature}
+          onChange={(event) => setCreature(event.target.value)}
+        >
+          {ChallengeRatingOptions.map((cr) => (
+            <option
+              key={cr.displayText}
+              value={cr.value}
+              selected={cr.value == creature}
+            >
+              CR {cr.displayText} &middot;{' '}
+              {EncounterCalculator.CRPowerLookup[cr.value]} XP
+            </option>
+          ))}
+        </select>
         <button
-          className={`${styles.svgButton} ${styles.btnChallengeRating} ${styles.increment}`}
-          onClick={() => increaseCount(challengeRating)}
+          className="btn btn-sm btn-square join-item"
+          disabled={!creature}
+          onClick={() => addCreature(Number(creature!), creatureToggle)}
         >
           <IconPlus />
         </button>
@@ -250,5 +223,3 @@ function CreatureListItem({
 function _numberSort(a: number, b: number) {
   return a - b;
 }
-
-export default CardBuildYourEncounter;
