@@ -115,12 +115,6 @@ h5,
 h6 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
-
-  /* margin-top: 0; // 1
-  margin-bottom: $headings-margin-bottom;
-  font-style: $headings-font-style;
-  line-height: $headings-line-height;
-  color: $headings-color; */
 }
 
 h1 {

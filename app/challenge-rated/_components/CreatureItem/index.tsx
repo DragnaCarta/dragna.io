@@ -1,13 +1,15 @@
-import IconMinus from '@/app/components/IconMinus';
-import IconPlus from '@/app/components/IconPlus';
 import Fraction from 'fraction.js';
-import EncounterCalculator from '../../_lib/EncounterCalculator';
+
+import IconMinus from '@/app/components/icons/IconMinus';
+import IconPlus from '@/app/components/icons/IconPlus';
+import { IconTrash } from '@/app/components/icons/IconTrash';
 
 type CreatureListItemProps = {
   challengeRating: number;
   count: number;
   increaseCount: (challengeRating: number) => void;
   decreaseCount: (challengeRating: number) => void;
+  onClear: () => void;
 };
 
 export function CreatureItem({
@@ -15,6 +17,7 @@ export function CreatureItem({
   count,
   increaseCount,
   decreaseCount,
+  onClear,
 }: CreatureListItemProps) {
   const crDisplay = new Fraction(challengeRating).toFraction(true);
 
@@ -23,9 +26,14 @@ export function CreatureItem({
       className="grid justify-between gap-2"
       style={{ gridTemplateColumns: '1fr 0fr' }}
     >
-      <p className="inline-flex items-center rounded-md grow">
-        CR: {crDisplay} &middot;{' '}
-        {EncounterCalculator.CRPowerLookup[challengeRating]} Power
+      <p className="inline-flex items-center rounded-md grow gap-2">
+        CR: {crDisplay}
+        <button
+          className="btn btn-xs btn-square btn-neutral text-error"
+          onClick={() => onClear()}
+        >
+          <IconTrash width={16} height={16} />
+        </button>
       </p>
       <div className="items-center join grow-0 shrink">
         <button

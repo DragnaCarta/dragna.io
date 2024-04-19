@@ -1,5 +1,3 @@
-import Footer from '@/app/components/Footer';
-
 import styles from './page.module.css';
 
 export default function App() {

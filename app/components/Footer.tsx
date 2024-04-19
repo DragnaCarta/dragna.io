@@ -65,20 +65,13 @@ function Footer() {
   ];
 
   return (
-    <div
-      style={{
-        background: '#282a36',
-        padding: '60px 0',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <div className="flex flex-col py-14 bg-base-100">
       <div className="footer-columns">
         {items.map((item) => {
           return (
             <div key={item.section} className="footer-column">
               <p className="footer-section">{item.section}</p>
-              <ul className="footer-list">
+              <ul className="footer-list mt-4">
                 {item.children.map((child) => {
                   return (
                     <li key={child.name} className="footer-item">

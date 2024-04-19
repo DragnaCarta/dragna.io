@@ -1,6 +1,6 @@
 import React from 'react';
 
-function RefreshIcon() {
+export function IconRefresh() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -18,5 +18,3 @@ function RefreshIcon() {
     </svg>
   );
 }
-
-export default RefreshIcon;

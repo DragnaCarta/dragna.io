@@ -1,12 +1,16 @@
-import IconPlus from '@/app/components/IconPlus';
-import ChallengeRatingOptions from '../../_lib/ChallengeRatingOptions';
-import PartyLevelOptions from '../../_lib/PartyLevelOptions';
-import PartySizeOptions from '../../_lib/PartySizeOptions';
-import { CreatureItem } from '../CreatureItem';
-import RefreshIcon from '../RefreshIcon';
 import { useState } from 'react';
-import EncounterCalculator from '../../_lib/EncounterCalculator';
-import { IconInfo } from '@/app/components/IconInfo';
+
+import IconPlus from '@/app/components/icons/IconPlus';
+import { IconRefresh } from '@/app/components/icons/IconRefresh';
+
+import ChallengeRatingOptions from '../../_lib/ChallengeRatingOptions';
+import PartyLevelOptions, {
+  INITIAL_PARTY_LEVEL,
+} from '../../_lib/PartyLevelOptions';
+import PartySizeOptions, {
+  INITIAL_PARTY_SIZE,
+} from '../../_lib/PartySizeOptions';
+import { CreatureItem } from '../CreatureItem';
 
 type CardBuildYourEncounterProps = {
   partySize: number;
@@ -44,6 +48,17 @@ export function CardBuildYourEncounter({
     }
   }
 
+  function clearOccurences(cr: number, creatureToggle: 0 | 1) {
+    const predicate = (creatures: number[]) =>
+      creatures.filter((creature) => creature !== cr);
+
+    return function () {
+      return creatureToggle
+        ? setAllies(predicate(allies))
+        : setEnemies(predicate(enemies));
+    };
+  }
+
   function addEnemy(challengeRating: number) {
     setEnemies([...enemies, challengeRating]);
   }
@@ -77,33 +92,32 @@ export function CardBuildYourEncounter({
   return (
     <>
       <div className="flex gap-2 items-center">
-        <h2>Build Your Encounter</h2>
+        <h2>Your Encounter</h2>
         <button
           className="btn btn-square btn-sm"
           onClick={() => {
             setEnemies([]);
             setAllies([]);
-            setPartyAverageLevel(0);
-            setPartySize(0);
+            setPartyAverageLevel(INITIAL_PARTY_LEVEL);
+            setPartySize(INITIAL_PARTY_SIZE);
           }}
         >
-          <RefreshIcon />
+          <IconRefresh />
         </button>
       </div>
 
       <div
-        className="w-full mt-6"
+        className="w-full mt-6 md:grid"
         style={{ gridTemplateColumns: '1fr auto 1fr' }}
       >
-        <div className="card bg-neutral p-4 flex flex-col justify-between">
+        <div className="card bg-neutral p-4 flex flex-col justify-between shadow-lg">
           <div className="flex items-center gap-4">
             <label className="form-control">
               <select
                 value={partySize}
                 className="select select-sm"
-                onChange={(event) => setPartySize(event.target.value)}
+                onChange={(event) => setPartySize(Number(event.target.value))}
               >
-                <option disabled>0</option>
                 {PartySizeOptions.map((pso) => (
                   <option key={pso.displayText} value={pso.value}>
                     {pso.displayText}
@@ -112,20 +126,18 @@ export function CardBuildYourEncounter({
               </select>
             </label>
             <div className="inline-flex items-center">
-              players&nbsp;
-              <div
-                className="tooltip"
-                data-tip="We use pre-generated character benchmarks to estimate the strength of your party. "
-              >
-                <IconInfo width={16} height={16} />
-              </div>
-              &nbsp;of level&nbsp;
+              {partySize === 1 ? 'player' : 'players'} of level&nbsp;
             </div>
             <label className="form-control">
               <select
                 value={partyAverageLevel}
                 className="select select-sm"
-                onChange={(event) => setPartyAverageLevel(event.target.value)}
+                onChange={(event) => {
+                  if (!Boolean(partySize)) {
+                    setPartySize(1);
+                  }
+                  setPartyAverageLevel(Number(event.target.value));
+                }}
               >
                 {PartyLevelOptions.map((pso) => (
                   <option key={pso.displayText} value={pso.value}>
@@ -139,7 +151,6 @@ export function CardBuildYourEncounter({
           <div className="flex flex-col gap-2 my-4">
             {Object.keys(allyCrOccurrences)
               .map((x) => parseFloat(x))
-              .sort(_numberSort)
               .map((cr) => {
                 const crCount = allyCrOccurrences[cr];
                 return (
@@ -149,23 +160,21 @@ export function CardBuildYourEncounter({
                     count={crCount}
                     increaseCount={(cr) => addAlly(cr)}
                     decreaseCount={(cr) => removeAlly(cr)}
+                    onClear={clearOccurences(cr, 1)}
                   />
                 );
               })}
           </div>
 
-          <AddCreature
-            addCreature={addCreature}
-            creatureToggle={1}
-            unit="Power"
-          />
+          <AddCreature addCreature={addCreature} creatureToggle={1} />
         </div>
-        <div className="divider divider-vertical">VS</div>
-        <div className="card bg-neutral textarea-info p-4 flex flex-col justify-between">
+
+        <div className="divider divider-vertical md:divider-horizontal">VS</div>
+
+        <div className="card bg-neutral textarea-info p-4 flex flex-col justify-between shadow-lg">
           <div className="flex flex-col gap-2 mb-4">
             {Object.keys(enemyCrOccurrences)
               .map((x) => parseFloat(x))
-              .sort(_numberSort)
               .map((cr) => {
                 const crCount = enemyCrOccurrences[cr];
 
@@ -176,6 +185,7 @@ export function CardBuildYourEncounter({
                     count={crCount}
                     increaseCount={(cr) => addEnemy(cr)}
                     decreaseCount={(cr) => removeEnemy(cr)}
+                    onClear={clearOccurences(cr, 0)}
                   />
                 );
               })}
@@ -198,32 +208,24 @@ function AddCreature({
   unit,
 }: Pick<CardBuildYourEncounterProps, 'addCreature'> & {
   creatureToggle: 0 | 1;
-  unit: string;
+  unit?: string;
 }) {
-  const [creature, setCreature] = useState<string | undefined>(
-    String(ChallengeRatingOptions[0].value)
-  );
+  const [creature, setCreature] = useState(ChallengeRatingOptions[0].value);
 
   return (
     <div className="form-control">
       <div className="join w-full flex">
         <div
-          className="tooltip tooltip-accent"
-          data-tip="We use the Monster Statistics by Challenge Ratings chart in the Dungeon Master's Guide to estimate the strength of NPCs and other creatures involved in the encounter."
+          className="btn btn-sm join-item cursor-default animate-none"
+          tabIndex={-1}
         >
-          <div
-            className="btn btn-sm join-item cursor-default animate-none"
-            tabIndex={-1}
-          >
-            {creatureToggle ? 'ALLY' : 'ENEMY'}{' '}
-            <IconInfo width={16} height={16} />
-          </div>
+          {creatureToggle ? 'ALLY' : 'ENEMY'}{' '}
         </div>
 
         <select
           className="select select-sm join-item grow"
           value={creature}
-          onChange={(event) => setCreature(event.target.value)}
+          onChange={(event) => setCreature(Number(event.target.value))}
         >
           {ChallengeRatingOptions.map((cr) => (
             <option
@@ -231,14 +233,12 @@ function AddCreature({
               value={cr.value}
               selected={cr.value == creature}
             >
-              CR {cr.displayText} &middot;{' '}
-              {EncounterCalculator.CRPowerLookup[cr.value]} {unit}
+              CR {cr.displayText}
             </option>
           ))}
         </select>
         <button
           className="btn btn-sm btn-square join-item"
-          disabled={!creature}
           onClick={() => addCreature(Number(creature!), creatureToggle)}
         >
           <IconPlus />

@@ -67,61 +67,9 @@ section.home {
   min-height: 300px;
 }
 
-$starFieldWidth: 2560;
-$starFieldHeight: 2000;
-$starStartOffset: 600px;
-
-$starOneScrollDuration: 75s;
-$starTwoScrollDuration: 125s;
-$starThreeScrollDuration: 175s;
-$numStarOneStars: 1700;
-$numStarTwoStars: 700;
-$numStarThreeStars: 200;
-
-@function multiple-box-shadow($n) {
-  $stars: '#{random($starFieldWidth)}px #{random($starFieldHeight)}px #FFF';
-
-  @for $i from 2 through $n {
-    $stars: '#{$stars} , #{random($starFieldWidth)}px #{random($starFieldHeight)}px #FFF';
-  }
-
-  @return unquote($stars);
-}
-
-@mixin star-template($numStars, $starSize, $scrollSpeed) {
-  z-index: 10;
-  width: $starSize;
-  height: $starSize;
-  background: transparent;
-  box-shadow: multiple-box-shadow($numStars);
-  animation: animStar $scrollSpeed linear infinite;
-
-  &:after {
-    content: ' ';
-    top: -$starStartOffset;
-    width: $starSize;
-    height: $starSize;
-    position: absolute;
-    background: transparent;
-    box-shadow: multiple-box-shadow($numStars);
-  }
-}
-
 .stars {
-  @include star-template($numStarOneStars, 1px, $starOneScrollDuration);
 }
 .stars2 {
-  @include star-template($numStarTwoStars, 2px, $starTwoScrollDuration);
 }
 .stars3 {
-  @include star-template($numStarThreeStars, 3px, $starThreeScrollDuration);
-}
-
-@keyframes animStar {
-  from {
-    transform: translateY(0px);
-  }
-  to {
-    transform: translateY(-#{$starFieldHeight}px);
-  }
 }

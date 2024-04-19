@@ -23,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
-        <main style={{ marginTop: 50 }}>{children}</main>
-        <Footer />
+        <section className="grid" style={{ gridTemplateRows: 'auto 1fr auto' }}>
+          <Header />
+          <main style={{ marginTop: 50 }}>{children}</main>
+          <Footer />
+        </section>
       </body>
     </html>
   );
