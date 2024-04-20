@@ -15,9 +15,6 @@ class Topbar extends Component {
             <li className={styles.items}>
               <Link href="/blog">Blog</Link>
             </li>
-            <li>
-              <Link className={styles.cta} href="https://www.patreon.com/DragnaCarta">Support the Creator</Link>
-            </li>
           </ul>
         </nav>
       </div>
