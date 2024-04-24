@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/big.js": "^6.2.2",
     "@vercel/analytics": "^1.1.0",
+    "big.js": "^6.2.1",
     "daisyui": "^4.10.2",
     "fraction.js": "^4.3.7",
     "next": "^14.2.1",

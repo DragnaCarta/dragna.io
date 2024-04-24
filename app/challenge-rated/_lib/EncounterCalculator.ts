@@ -236,31 +236,14 @@ class EncounterCalculator {
     const difficulty = (totalEnemyPower / totalPartyAndAllyPower) ** 2 * 100;
 
     ///////////
-    const difficultyLevels: {
-      max: number;
-      label: string;
-    }[] = [
-      { max: 20, label: 'Mild' },
-      { max: 40, label: 'Bruising' },
-      { max: 60, label: 'Bloody' },
-      { max: 80, label: 'Brutal' },
-      { max: 100, label: 'Oppressive' },
-      { max: 130, label: 'Overwhelming' },
-      { max: 170, label: 'Crushing' },
-      { max: 250, label: 'Devastating' },
-      { max: Infinity, label: 'Impossible' },
-    ];
 
     const hpLost = difficulty;
     const resourcesSpent = Math.round(0.67 * hpLost);
-    const encounterDifficulty =
-      difficultyLevels.find((level) => hpLost <= level.max)?.label || 'Unknown';
 
     //
     return {
       hpLost,
       resourcesSpent,
-      encounterDifficulty,
     };
   }
 }
