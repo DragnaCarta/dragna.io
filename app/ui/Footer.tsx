@@ -24,7 +24,7 @@ function Footer() {
         },
         {
           name: 'Challenge Rated',
-          url: '/challenge-rated',
+          url: 'https://challengerated.com',
         },
       ],
     },

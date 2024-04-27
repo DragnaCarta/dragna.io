@@ -8,13 +8,6 @@ function Header() {
       <Link href="/" className="text-2xl">
         Dragna.io
       </Link>
-      <ul>
-        <li className={styles.items}>
-          <Link href="/challenge-rated" className="link">
-            Challenge Rated
-          </Link>
-        </li>
-      </ul>
     </nav>
   );
 }
